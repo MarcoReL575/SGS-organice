@@ -2,7 +2,7 @@ import { db } from "@/src";
 import { user } from "@/src/db/schema/auth-schema";
 import { LoginType } from "better-auth";
 import { and, eq } from "drizzle-orm";
-import { UserSelect } from "../../types/types";
+import { UserSelect } from "../types/types";
 
 
 export interface IAuthRepository {

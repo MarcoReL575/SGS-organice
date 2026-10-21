@@ -6,8 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
 import { LoginAction } from '../actions/LoginAction';
 import { FormComponent, FormError, FormInput, FormLabel, FormSubmit } from '@/src/shared/components/form';
-import { LoginSchema } from '../../schema/schema';
-import { LoginType } from '../../types/types';
+import { LoginSchema } from '../schema/schema';
+import { LoginType } from '../types/types';
 import { useState } from 'react';
 
 export default function FormLogin() {

@@ -1,7 +1,7 @@
 import { authRepository, IAuthRepository } from "./authRepository";
 import { auth } from "@/src/lib/auth";
 import { headers } from "next/headers";
-import { LoginType } from "../../types/types";
+import { LoginType } from "../types/types";
 
 class AuthService {
     constructor (
