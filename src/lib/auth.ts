@@ -22,5 +22,19 @@ export const auth = betterAuth({
         expiresIn: 60 * 60 * 24 * 7, // 7 días
         updateAge: 60 * 60 * 24, // Actualizar cada 24 horas
     },
+    user: {
+        additionalFields: {
+            role: {
+                type: "string",
+                defaultValue: "ingeniero",
+                required: true,
+            },
+            isActive: {
+                type: "boolean",
+                defaultValue: true,
+                required: true,
+            },
+        }
+    },
     plugins: [nextCookies()]
 });
