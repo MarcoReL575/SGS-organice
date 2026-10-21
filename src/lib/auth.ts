@@ -2,14 +2,25 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "..";
 import { nextCookies } from "better-auth/next-js";
+import * as authSchema from "../db/schema/auth-schema"
 
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
         provider: "pg", // or "mysql", "sqlite"
+        schema: {
+            user: authSchema.user,
+            session: authSchema.session,
+            account: authSchema.account,
+            verification: authSchema.verification
+        }
     }),
     emailAndPassword: {
         enabled: true
+    },
+    session: {
+        expiresIn: 60 * 60 * 24 * 7, // 7 días
+        updateAge: 60 * 60 * 24, // Actualizar cada 24 horas
     },
     plugins: [nextCookies()]
 });
