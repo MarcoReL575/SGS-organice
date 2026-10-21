@@ -8,24 +8,30 @@ import { LoginAction } from '../actions/LoginAction';
 import { FormComponent, FormError, FormInput, FormLabel, FormSubmit } from '@/src/shared/components/form';
 import { LoginSchema } from '../../schema/schema';
 import { LoginType } from '../../types/types';
+import { useState } from 'react';
 
 export default function FormLogin() {
 
     const router = useRouter();
+    const [loading, setloading] = useState<boolean>(false);
+
     const { register, formState: { errors }, handleSubmit, setValues } = useForm<LoginType>({
         resolver: zodResolver(LoginSchema),
         mode: 'onBlur'
     });
 
     const handleLogin = async(data: LoginType)=> {
+        setloading(()=> true);
         const { success, message } = await LoginAction(data);
 
         if(success) {
+            setloading(false);
             toast.success(message);
             router.push('/home');
         }
 
         if(!success) {
+            setloading(false);
             toast.error(message);
             setValues({
                 password: ''
@@ -35,7 +41,7 @@ export default function FormLogin() {
 
   return (
     <FormComponent
-        className='border p-10 rounded-lg flex flex-col'
+        className='flex flex-col'
         onSubmit={handleSubmit(handleLogin)}
     >
         <FormLabel id='email'>Ingresa tu email</FormLabel>
@@ -47,7 +53,11 @@ export default function FormLogin() {
         { errors.password && <FormError>{errors.password.message}</FormError> }
 
         <FormSubmit>
-            Iniciar sesión 
+            {
+                loading 
+                    ? 'Iniciando ...'
+                    : 'Iniciar sesión'
+            }
         </FormSubmit>
     </FormComponent>
   )
