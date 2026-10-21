@@ -31,6 +31,8 @@ CREATE TABLE "user" (
 	"email" text NOT NULL UNIQUE,
 	"email_verified" boolean DEFAULT false NOT NULL,
 	"image" text,
+	"role" text DEFAULT 'ingeniero' NOT NULL,
+	"is_active" boolean DEFAULT true NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );

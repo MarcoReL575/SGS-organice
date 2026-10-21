@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "e3b353fe-4e86-4f61-b363-b20e926fd636",
+  "id": "9feb2ade-4506-4933-9069-2aba37d6267b",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -364,6 +364,32 @@
       "generated": null,
       "identity": null,
       "name": "image",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "user"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'ingeniero'",
+      "generated": null,
+      "identity": null,
+      "name": "role",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "user"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "true",
+      "generated": null,
+      "identity": null,
+      "name": "is_active",
       "entityType": "columns",
       "schema": "public",
       "table": "user"
