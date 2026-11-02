@@ -5,6 +5,8 @@ import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, Side
 import { Button } from "../ui/button"
 import { usePathname } from "next/navigation"
 import { clsx } from "cn"
+import Link from "next/link"
+import { Route } from "next"
 
 interface Props {
     items: {
@@ -28,10 +30,12 @@ export function NavMain({ items }: Props) {
             <SidebarMenuItem key={`${item.role}-${item.title}`}>
               <SidebarMenuButton 
                 tooltip={item.title}
-                className={clsx(pathname === item.url && 'bg-black text-white transition-all duration-300')}
+                className={clsx(pathname.includes(item.url) && 'bg-black text-white transition-all duration-300')}
               >
                 {item.icon && <item.icon />}
-                <span>{item.title}</span>
+                <Link href={item.url as Route}>
+                  {item.title}
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

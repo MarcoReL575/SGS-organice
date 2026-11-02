@@ -6,7 +6,7 @@ import { NavMain } from "./NavMain"
 import Link from "next/link"
 
 const menuItems = {
-  administrador: [
+  admin: [
     { title: "Home", url: "/dashboard/home", icon: IconUserCircle , role: 'administrador' },
     { title: "Usuarios", url: "/dashboard/usuarios", icon: IconUserCircle, role: 'administrador' },
     { title: "Clientes", url: "/dashboard/clientes", icon: IconUserCircle, role: 'administrador'  },
