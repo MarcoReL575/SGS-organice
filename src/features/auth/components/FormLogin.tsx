@@ -27,7 +27,7 @@ export default function FormLogin() {
         if(success) {
             setloading(false);
             toast.success(message);
-            router.push('/home');
+            router.push('/dashboard/home');
         }
 
         if(!success) {
