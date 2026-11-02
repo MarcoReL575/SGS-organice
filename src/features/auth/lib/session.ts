@@ -18,7 +18,7 @@ export async function requireAuth() {
     });
 
     if (!session) {
-        redirect("/login");
+        redirect("/auth/login");
     }
 
     return session;
@@ -28,7 +28,7 @@ export async function requireRole(allowedRoles: Role[]) {
     const session = await requireAuth();
 
     if (!allowedRoles.includes(session.user.role as Role)) {
-        redirect("/dashboard");
+        redirect("/dashboard/home");
     }
 
     return session;
