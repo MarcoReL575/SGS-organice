@@ -17,14 +17,14 @@ async function seedAdmin() {
         body: {
             name: "Administrador",
             email: "admin@empresa.com",
-            password: "Admin123!",
+            password: "1234567890",
             role: "admin", // Better Auth permite pasar campos personalizados
         },
     });
 
     console.log("✅ Usuario administrador creado exitosamente:");
     console.log(`Email: admin@empresa.com`);
-    console.log(`Contraseña: Admin123!`);
+    console.log(`Contraseña: 1234567890`);
     console.log("\n⚠️  IMPORTANTE: Cambia la contraseña después del primer login");
     process.exit(0);
   } catch (error) {
