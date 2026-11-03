@@ -7,7 +7,7 @@ export function middlewareAuth(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
   
   // Define las rutas protegidas
-  if(request.nextUrl.pathname.startsWith('dashboard')) {
+  if(request.nextUrl.pathname.startsWith('/dashboard')) {
     if(!sessionCookie) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
