@@ -34,7 +34,7 @@ export default function EmailTemplate({ role, url, expiresAt }: Props) {
         <p>Para completar tu registro, haz clic en el siguiente botón:</p>
         
         <div className="text-center">
-            <a href="${url}" className="button">Completar Registro</a>
+            <a href={url} className="button">Completar Registro</a>
         </div>
         
         <p>O copia y pega este enlace en tu navegador:</p>

@@ -2,6 +2,8 @@ import { authRepository, IAuthRepository } from "./authRepository";
 import { auth } from "@/src/lib/auth";
 import { headers } from "next/headers";
 import { LoginType, UserInsert, UserSelect } from "../types/types";
+import { InvitationSelect } from "../../email/types/types";
+import { authClient } from "@/src/lib/auth-client";
 
 class AuthService {
     constructor (
@@ -48,8 +50,15 @@ class AuthService {
             }
             return { success: false, message: 'Credenciales inválidas' }
         } catch (error) {
+            console.error({error})
             return { success: false, message: 'El usuario no existe' }
         }
+    }
+
+    async logout() {
+        await auth.api.signOut({
+            headers: await headers()
+        })
     }
 
     async createUser(userInfo: UserInsert) {
@@ -71,6 +80,39 @@ class AuthService {
             return { success: true, message: '', users: usersList }
         } catch (error) {
             return { success: false, message: 'El usuario no tiene los permisos necesarios', users: {} as UserSelect[] }
+        }
+    }
+
+    async getInvitationByToken(token: string) {
+        try {
+            const invitation = await this.authRepository.selectInvitationByToken(token);
+            return { success: true, message: '', invitation }
+        } catch (error) {
+            return { success: false, message: 'El correo no cuenta con una invitación', invitation: {} as InvitationSelect }
+        }
+    }
+
+    async insertInvitationPasswordUser(email: string, password: string, ) {
+        try {
+            // Verificamos que el usuario ya haya sido dado de alta en la base de datos por un admin
+            const { success, user, message } = await this.userExists(email);
+            if(!success) {
+                return { success, message }
+            }
+
+            // Insertamos el password del usuario 
+            await this.authRepository.registerPasswordInvitationUser(email, password, user.id);
+            
+            // Actualizamos el estado del usuario (marcamos el email como verificado)
+            await this.authRepository.setStatuVerifiedEmail(user.id);
+            
+            // Invalidamos el token para que la invitación sea de un solo uso
+            await this.authRepository.setToInvitationUsed(user.id);
+            
+            return { success: true, message: 'La password ha sido creada' }
+        } catch (error) {
+            console.error({error})
+            return { success: false, message: 'Hubo un error al crear tu password' }
         }
     }
 } 
