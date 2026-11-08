@@ -4,6 +4,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/src/shared/components/ui/
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/src/shared/components/ui/dropdown-menu"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/src/shared/components/ui/sidebar"
 import { IconCreditCard, IconDotsVertical, IconLogout, IconNotification, IconUserCircle } from "@tabler/icons-react"
+import { SignOutAction } from "@/src/features/auth/actions/SignOutAction"
+import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
 
 interface Props {
   user: {
@@ -15,7 +18,19 @@ interface Props {
 }
 
 export function NavUser({ user }: Props) {
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
+  const router = useRouter();
+  const handleLogOut = async()=> {
+    const { success, message } = await SignOutAction();
+
+    if(!success) {
+      toast.error(message);
+    }
+
+    if(success) {
+      router.push('/auth/login');
+    }
+  }
 
   return (
     <SidebarMenu className="w-fit border rounded-lg ">
@@ -77,7 +92,7 @@ export function NavUser({ user }: Props) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogOut}>
               <IconLogout />
               Log out
             </DropdownMenuItem>
