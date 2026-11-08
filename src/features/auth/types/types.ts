@@ -1,8 +1,9 @@
 import z from "zod";
-import { createUserSchema, LoginSchema } from "../schema/schema";
+import { createPasswordUserSchema, createUserSchema, LoginSchema } from "../schema/schema";
 import { user } from "@/src/db/schema/auth-schema";
 
 export type LoginType = z.infer<typeof LoginSchema>;
+export type CreatePasswordUserType = z.infer<typeof createPasswordUserSchema>;
 
 export type UserInsert = typeof user.$inferInsert;
 export type UserSelect = typeof user.$inferSelect;
