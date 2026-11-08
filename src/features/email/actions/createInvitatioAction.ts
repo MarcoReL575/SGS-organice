@@ -34,7 +34,7 @@ export async function createInvitatioAction(invitation: Invitation) {
         return { success: false, message: messageInvitation }
     }
 
-    const { success: successNewInvitation, message: messageNewInvitation, invitation: newInvitation } = await emailService.createInvitation(user.id, invitation);
+    const { success: successNewInvitation, message: messageNewInvitation, invitation: newInvitation } = await emailService.createInvitation(user.id, invitation, newUser.id);
     if(!successNewInvitation || !newInvitation) {
         return { success: false, message: messageNewInvitation }
     }

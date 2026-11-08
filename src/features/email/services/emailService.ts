@@ -49,14 +49,15 @@ class EmailService {
         }
     };
 
-    async createInvitation(adminId: string, invitation: Invitation) {
+    async createInvitation(adminId: string, invitation: Invitation, newUserId: string) {
         const InvitationInsert = {
             id: uuidv4(),
             email: invitation.email,
             role: invitation.role,
             token: invitation.token,
             invitedBy: adminId,
-            expiresAt: invitation.expiresAt
+            expiresAt: invitation.expiresAt,
+            userId: newUserId
         }
 
         try {

@@ -31,7 +31,7 @@ class EmailRespository implements IEmailRespository{
     }
 
     async insertInvitation(invitation: InvitationInsert): Promise<InvitationSelect> {
-        const { email, id, invitedBy, expiresAt, role, token } = invitation
+        const { email, id, invitedBy, expiresAt, role, token, userId  } = invitation
         const [result] = await db 
             .insert(invitations)
             .values({
@@ -40,7 +40,8 @@ class EmailRespository implements IEmailRespository{
                 token,
                 invitedBy,
                 expiresAt,
-                id
+                id,
+                userId
             })
             .returning()
         return  result;
