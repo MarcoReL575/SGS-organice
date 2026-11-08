@@ -11,7 +11,8 @@ interface SendInvitationEmailParams {
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendInvitationEmail({ to, token, role, expiresAt }: SendInvitationEmailParams) {
-    const invitationLink = `${process.env.NEXT_PUBLIC_APP_URL}/auth/accept-invitation?token=${token}`;
+    const url = process.env.NEXT_PUBLIC_APP_URL ?? 'localhost:3000'
+    const invitationLink = `${url}/auth/accept-invitation?token=${token}`;
     const recipientEmail = process.env.NODE_ENV === 'development' ? process.env.EMAIL_TO! : to;
 
 
