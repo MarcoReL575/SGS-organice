@@ -1,4 +1,5 @@
 import { authService } from '@/src/features/auth/service/authService'
+import UsersTable from '@/src/features/user/components/TableUsers'
 import { requireAuth } from '@/src/lib/session'
 import { Button } from '@/src/shared/components/ui/button'
 import { IconCirclePlus } from '@tabler/icons-react'
@@ -12,32 +13,22 @@ async function UserConetnt() {
   const { success, message, users } = await authService.selectAllUsers(user.email);
 
   return (
-    <div>
-        <Link href={'/dashboard/usuarios/agregarUsuario' as Route}>
-            <Button className='bg-green-500 hover:bg-green-400 text-white duration-300 transition-all'>
-                <IconCirclePlus />
-                Agregar Nuevo Usuario
-            </Button>
-        </Link>
+    <main className='flex flex-col space-y-8'>
+      <Link href={'/dashboard/usuarios/agregarUsuario' as Route}>
+        <Button className='bg-green-500 hover:bg-green-400 text-white duration-300 transition-all'>
+            <IconCirclePlus />
+            Agregar Nuevo Usuario
+        </Button>
+      </Link>
 
-        <section>
-          {
-            users.map((user)=> (
-              <ul key={user.id} className='flex space-x-4'>
-                <li>{user.name}</li>
-                <li>{user.email}</li>
-                <li>{user.role}</li>
-              </ul>
-            ))
-          }
-        </section>
-    </div>
+      <UsersTable data={users} />
+    </main>
   )
 }
 
 export default async function UsuariosPage() {
   return (
-    <Suspense fallback={<div>Cargando usuarios...</div>}>
+    <Suspense fallback={<div className='container mx-auto'>Cargando usuarios...</div>}>
       <UserConetnt />
     </Suspense>
   )
