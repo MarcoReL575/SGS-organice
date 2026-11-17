@@ -92,7 +92,7 @@ class AuthService {
         }
     }
 
-    async insertInvitationPasswordUser(email: string, password: string, ) {
+    async insertInvitationPasswordUser(email: string, password: string ) {
         try {
             // Verificamos que el usuario ya haya sido dado de alta en la base de datos por un admin
             const { success, user, message } = await this.userExists(email);
@@ -113,6 +113,21 @@ class AuthService {
         } catch (error) {
             console.error({error})
             return { success: false, message: 'Hubo un error al crear tu password' }
+        }
+    }
+
+    async getInvitationsByUser(email: string) {
+        try {
+            const { success, user, message } = await this.userExists(email);
+            if(!success) {
+                return { success, message }
+            }
+            const invitation = await this.authRepository.selectInvitationsUser(email)
+            if(!invitation.id) return { success: false, message: 'No se puede reenviar invitación al usuario', invitation: {} as InvitationSelect }
+
+            return { success: true, message: '', invitation }
+        } catch (error) {
+            return { success: false, message: 'No se puede reenviar invitación al usuario', invitation: {} as InvitationSelect }
         }
     }
 } 
