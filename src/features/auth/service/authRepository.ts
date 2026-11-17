@@ -13,6 +13,7 @@ export interface IAuthRepository {
     selectUser(email: string): Promise<UserSelect>;
     createUser(user: UserInsert): Promise<UserSelect>;
     selectInvitationByToken(token: string): Promise<InvitationSelect>;
+    selectInvitationsUser(email: string): Promise<InvitationSelect>;
     registerPasswordInvitationUser(email: string, password: string, userId: string): Promise<void>;
     setStatuVerifiedEmail(userId: string): Promise<void>;
     setToInvitationUsed(userId: string): Promise<InvitationSelect>;
@@ -41,6 +42,7 @@ class AuthRepository implements IAuthRepository {
             .values({
                 name: userInfo.name,
                 email: userInfo.email,
+                role: userInfo.role
             })
             .returning()
         return result;
@@ -92,6 +94,14 @@ class AuthRepository implements IAuthRepository {
             .where(eq(invitations.userId, userId))
             .returning()
         return invitation;
+    }
+
+    async selectInvitationsUser(email: string): Promise<InvitationSelect> {
+        const [invitationsUser] = await db
+            .select()
+            .from(invitations)
+            .where(eq(invitations.email, email))
+        return invitationsUser;
     }
 }
 
