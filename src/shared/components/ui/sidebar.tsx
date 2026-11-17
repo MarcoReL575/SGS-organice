@@ -6,7 +6,6 @@ import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 
-import { useIsMobile } from "@/hooks/use-mobile"
 import { Input } from "@/src/shared/components/ui/input"
 import { Separator } from "@/src/shared/components/ui/separator"
 import {
@@ -25,6 +24,7 @@ import {
 import { PanelLeftIcon } from "lucide-react"
 import { Button } from "./button"
 import { IconArrowBarBoth, IconArrowsRightLeft } from "@tabler/icons-react"
+import { useIsMobile } from "../../hooks/use-mobile"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7

@@ -20,7 +20,6 @@ interface Props {
 export function NavMain({ items }: Props) {
 
   const pathname = usePathname();
-  console.log(pathname)
 
   return (
     <SidebarGroup>
