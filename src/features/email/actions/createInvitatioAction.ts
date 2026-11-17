@@ -14,7 +14,8 @@ export async function createInvitatioAction(invitation: Invitation) {
 
     const infoUser = {
         name: invitation.name,
-        email: invitation.email
+        email: invitation.email,
+        role: invitation.role
     }
 
     // Verificamos si ya existe un usuario con este correo
