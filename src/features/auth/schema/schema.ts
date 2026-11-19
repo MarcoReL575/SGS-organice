@@ -7,7 +7,7 @@ export const LoginSchema = z.object({
 
 export const createInvitationSchema = z.object({
     email: z.string().email("Correo electrónico inválido"),
-    role: z.enum(["supervisor", "ingeniero"]),
+    role: z.enum(["supervisor", "ingeniero", "admin"]),
     expiresInHours: z.number().min(1).max(168).optional().default(48),
 });
 
