@@ -51,6 +51,9 @@ class AuthService {
         const { email, password } = data;
         try {
             const userExists = await this.userExists(email);
+            if(!userExists.user.isActive) {
+                return { success: false, message:'Tu usuario ha sido dado de baja del sistema' }
+            }
             if(userExists?.user.id) {
                 await auth.api.signInEmail({
                     body: {
