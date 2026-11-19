@@ -63,11 +63,12 @@ const columns = [
         cell: (info) => {
             const userId = info.getValue();
             const userIsActive = info.row.original.isActive;
+            const email = info.row.original.email;
             return (
                 <div className='flex items-center justify-center'>
                     {userIsActive 
                         ? <ButtonOptionsUser userId={userId} />
-                        : <ButtonRecoverUser />
+                        : <ButtonRecoverUser email={email} userId={userId} />
                     }
                 </div>
             )
