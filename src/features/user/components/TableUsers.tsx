@@ -8,6 +8,7 @@ import ButtonResendInvitation from './ButtonResendInvitation';
 import { IconCheck } from '@tabler/icons-react';
 import { ButtonOptionsUser } from './ButtonOptionsUser';
 import { clsx } from 'cn';
+import ButtonRecoverUser from './ButtonRecoverUser';
 
 interface Props {
     data: UserSelect[];
@@ -61,9 +62,13 @@ const columns = [
         header: 'Más Opciones',
         cell: (info) => {
             const userId = info.getValue();
+            const userIsActive = info.row.original.isActive;
             return (
                 <div className='flex items-center justify-center'>
-                    <ButtonOptionsUser userId={userId} />
+                    {userIsActive 
+                        ? <ButtonOptionsUser userId={userId} />
+                        : <ButtonRecoverUser />
+                    }
                 </div>
             )
         }
@@ -95,6 +100,13 @@ export default function UsersTable({ data }: Props) {
                     table={table}
                     columnsLength={columns.length}
                     noResultsMessage="No se encontraron usuarios registrados."
+                    getRowClassName={(row) =>
+                        clsx(
+                            row.original.isActive
+                                ? 'transition-opacity'
+                                : 'opacity-30 transition-opacity'
+                        )
+                    }
                 />
             </CardContent>
         </Card>

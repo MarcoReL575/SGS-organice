@@ -7,9 +7,10 @@ interface DataTableProps<TData> {
     table: TanstackTable<TData>;
     columnsLength: number;
     noResultsMessage?: string;
+    getRowClassName?: (row: Row<TData>) => string;
 }
 
-export function TableComponent<TData>({ table, columnsLength, noResultsMessage = "No hay resultados." }: DataTableProps<TData>) {
+export function TableComponent<TData>({ table, columnsLength, noResultsMessage = "No hay resultados.", getRowClassName}: DataTableProps<TData>) {
     return (
         <Table className=''>
             <TableHeader>
@@ -31,7 +32,7 @@ export function TableComponent<TData>({ table, columnsLength, noResultsMessage =
             <TableBody>
                 {table.getRowModel().rows?.length ? (
                     table.getRowModel().rows.map((row) => (
-                        <TableRow key={row.id}>
+                        <TableRow key={row.id} className={getRowClassName?.(row)}>
                             {row.getAllCells().map((cell) => (
                                 <TableCell key={cell.id}>
                                     {flexRender(
