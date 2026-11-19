@@ -155,6 +155,20 @@ class AuthService {
             return { success: false, message: 'Error al actualizar el usuario' }
         }
     }
+
+    async deleteUser(userId: string) {
+        try {
+            const { user } = await this.getUserById(userId);
+            if(!user.id) {
+                return { success: false, message: 'No se pudo encontrar al usuario' }
+            }
+
+            await this.authRepository.setDeleteUser(userId);
+            return { success: true, message: 'El usuario fue eliminado' }
+        } catch (error) {
+            return { success: false, message: 'Hubo un error al eliminar al usaurio' }
+        }
+    }
 } 
 
 export const authService = new AuthService(authRepository);
