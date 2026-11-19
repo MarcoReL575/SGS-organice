@@ -4,12 +4,20 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { Button } from "@/src/shared/components/ui/button"
 import { IconDotsVertical, IconEdit, IconTrash } from "@tabler/icons-react"
 import Link from "next/link"
+import { Route } from "next"
+import { useModalStore } from "@/src/shared/store/useModalStore"
 
 interface Props {
     userId: string
 }
 
 export function ButtonOptionsUser({ userId }: Props) {
+
+    const { setOpen } = useModalStore();
+    const handleOpenModalDeleteUser = ()=> {
+        setOpen("modalDeleteUser", )
+    }
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger render={<Button variant="outline"><IconDotsVertical /></Button>} />
@@ -25,6 +33,7 @@ export function ButtonOptionsUser({ userId }: Props) {
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         className='hover:text-red-500 duration-300 transition-all cursor-pointer'
+                        onClick={handleOpenModalDeleteUser}
                     >
                         Eliminar 
                         <DropdownMenuShortcut><IconTrash /></DropdownMenuShortcut>
