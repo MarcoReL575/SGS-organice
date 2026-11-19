@@ -10,15 +10,9 @@ import { v4 as uuidv4 } from'uuid'
 import { Role } from '../lib/session';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { optionRoles } from '@/src/shared/db/optionRoles';
 
-interface Props {
-    optionRoles: {
-        label: string;
-        value: string;
-    }[]
-}
-
-export default function FormCreateUser({ optionRoles }: Props) {
+export default function FormCreateUser() {
     const router = useRouter();
 
     const { formState: { errors }, register, handleSubmit, setValues } = useForm({
