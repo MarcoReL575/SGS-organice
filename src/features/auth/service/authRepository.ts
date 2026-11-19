@@ -20,6 +20,7 @@ export interface IAuthRepository {
     setStatuVerifiedEmail(userId: string): Promise<void>;
     setToInvitationUsed(userId: string): Promise<InvitationSelect>;
     setUser(userInfo: UserEditInsert, userId: string): Promise<void>;
+    setDeleteUser(userId: string): Promise<void>;
 }
   
 
@@ -123,6 +124,15 @@ class AuthRepository implements IAuthRepository {
                 name,
                 email,
                 role
+            })
+            .where(eq(user.id, userId))
+    }
+
+    async setDeleteUser(userId: string): Promise<void> {
+        await db
+            .update(user)
+            .set({
+                isActive: false
             })
             .where(eq(user.id, userId))
     }
