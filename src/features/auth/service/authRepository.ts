@@ -21,6 +21,7 @@ export interface IAuthRepository {
     setToInvitationUsed(userId: string): Promise<InvitationSelect>;
     setUser(userInfo: UserEditInsert, userId: string): Promise<void>;
     setDeleteUser(userId: string): Promise<void>;
+    recoverUser(userId: string): Promise<void>
 }
   
 
@@ -134,6 +135,15 @@ class AuthRepository implements IAuthRepository {
             .update(user)
             .set({
                 isActive: false
+            })
+            .where(eq(user.id, userId))
+    }
+
+    async recoverUser(userId: string): Promise<void> {
+        await db
+            .update(user)
+            .set({
+                isActive: true
             })
             .where(eq(user.id, userId))
     }

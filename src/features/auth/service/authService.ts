@@ -169,6 +169,18 @@ class AuthService {
             return { success: false, message: 'Hubo un error al eliminar al usaurio' }
         }
     }
+
+    async recoverUser(userId: string, email: string) {
+        try {
+            const { user, success, message } = await this.userExists(email);
+            if(!user.id) return { success, message }
+
+            await this.authRepository.recoverUser(userId);
+            return { success: true, message: 'Usuario recuperado' }
+        } catch (error) {
+            return { success: false, message: 'Hubo un error al recuperar al usaurio' }
+        }
+    }
 } 
 
 export const authService = new AuthService(authRepository);
