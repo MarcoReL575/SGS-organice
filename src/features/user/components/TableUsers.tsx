@@ -6,6 +6,8 @@ import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle }
 import { useTable, tableFeatures, rowPaginationFeature, createPaginatedRowModel, createColumnHelper } from '@tanstack/react-table';
 import ButtonResendInvitation from './ButtonResendInvitation';
 import { IconCheck } from '@tabler/icons-react';
+import { ButtonOptionsUser } from './ButtonOptionsUser';
+import { clsx } from 'cn';
 
 interface Props {
     data: UserSelect[];
@@ -25,7 +27,20 @@ const columns = [
     }),
     columnHelper.accessor('role', {
         header: 'Role Usuario',
-        cell: (info) => info.getValue(),
+        cell: (info) => {
+            const role = info.getValue();
+            return (
+                <div
+                    className={clsx( 'capitalize font-semibold flex items-center justify-center rounded-lg py-0.5 text-white',
+                        role === 'admin' && 'bg-blue-400 ',
+                        role === 'supervisor' && 'bg-orange-400',
+                        role === 'ingeniero' && 'bg-gray-400',
+                    )}
+                >
+                    {role}
+                </div>
+            )
+        },
     }),
     columnHelper.accessor('emailVerified', {
         header: 'Verificado',
@@ -42,6 +57,18 @@ const columns = [
             );
         },
     }),
+    columnHelper.accessor('id', {
+        header: 'Más Opciones',
+        cell: (info) => {
+            const userId = info.getValue();
+            return (
+                <div className='flex items-center justify-center'>
+                    <ButtonOptionsUser userId={userId} />
+                </div>
+            )
+        }
+    }),
+
 ];
 
 const features = tableFeatures({
