@@ -4,14 +4,16 @@ export type ModalType = 'modalDeleteUser' | null
 
 interface ModalStore {
     type: ModalType;
+    data: any
     isOpen: boolean;
-    setOpen: (type: ModalType) => void;
+    setOpen: (type: ModalType, data?: any) => void;
     setClose: () => void
 }
 
 export const useModalStore = create<ModalStore>()((set) => ({
     type: null,
+    data: {},
     isOpen: false,
-    setOpen: (type )=> set({ isOpen: true, type }),
+    setOpen: (type, data={} )=> set({ isOpen: true, type, data }),
     setClose: ()=> set({ isOpen: false }) 
 }))
