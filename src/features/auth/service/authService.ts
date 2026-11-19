@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { LoginType, UserInsert, UserSelect } from "../types/types";
 import { InvitationSelect } from "../../email/types/types";
 import { authClient } from "@/src/lib/auth-client";
+import { UserEditInsert } from "../../user/types/typeUser";
 
 class AuthService {
     constructor (
@@ -25,6 +26,18 @@ class AuthService {
     async userExists(email: string) {
         try {
             const userExists = await this.authRepository.selectUser(email);
+            if(userExists) {
+                return { success: true, message: '', user: userExists }
+            }
+            return { success: false, message: 'El usuario no existe', user: {} as UserSelect }
+        } catch (error) {
+            return { success: false, message: 'El usuario no existe', user: {} as UserSelect }
+        }
+    }
+
+    async getUserById(userId: string) {
+        try {
+            const userExists = await this.authRepository.selectUserById(userId);
             if(userExists) {
                 return { success: true, message: '', user: userExists }
             }
@@ -128,6 +141,18 @@ class AuthService {
             return { success: true, message: '', invitation }
         } catch (error) {
             return { success: false, message: 'No se puede reenviar invitación al usuario', invitation: {} as InvitationSelect }
+        }
+    }
+
+    async updateInfoUser(currentEmail: string, userInfo: UserEditInsert, userId: string) {
+        try {
+            const { user, success, message } = await this.userExists(currentEmail);
+            if(!user.id || !success) return { success: false, message: 'No se encontro al usuario' }
+
+            await this.authRepository.setUser(userInfo, userId);
+            return { success: true, message: 'El usuario fue actualizado' }
+        } catch (error) {
+            return { success: false, message: 'Error al actualizar el usuario' }
         }
     }
 } 

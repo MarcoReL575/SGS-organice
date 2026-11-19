@@ -5,18 +5,21 @@ import { UserInsert, UserSelect } from "../types/types";
 import { invitations } from "@/src/db/schema/invitations-schema";
 import { InvitationSelect } from "../../email/types/types";
 import { hashPassword } from 'better-auth/crypto'
+import { UserEditInsert } from "../../user/types/typeUser";
 
 
 export interface IAuthRepository {
     selectAdmin(): Promise<UserSelect[]>;
     selectAllUsers(): Promise<UserSelect[]>;
     selectUser(email: string): Promise<UserSelect>;
+    selectUserById(userId: string): Promise<UserSelect>;
     createUser(user: UserInsert): Promise<UserSelect>;
     selectInvitationByToken(token: string): Promise<InvitationSelect>;
     selectInvitationsUser(email: string): Promise<InvitationSelect>;
     registerPasswordInvitationUser(email: string, password: string, userId: string): Promise<void>;
     setStatuVerifiedEmail(userId: string): Promise<void>;
     setToInvitationUsed(userId: string): Promise<InvitationSelect>;
+    setUser(userInfo: UserEditInsert, userId: string): Promise<void>;
 }
   
 
@@ -35,6 +38,14 @@ class AuthRepository implements IAuthRepository {
             .where(eq(user.email, email))
         return result;   
     };
+
+    async selectUserById(userId: string): Promise<UserSelect> {
+        const [result] = await db
+            .select()
+            .from(user)
+            .where(eq(user.id, userId))
+        return result;   
+    }
 
     async createUser(userInfo: UserInsert): Promise<UserSelect> {
         const [result] = await db
@@ -102,6 +113,18 @@ class AuthRepository implements IAuthRepository {
             .from(invitations)
             .where(eq(invitations.email, email))
         return invitationsUser;
+    }
+
+    async setUser(userInfo: UserEditInsert, userId: string): Promise<void> {
+        const { email, name, role } = userInfo;
+        await db 
+            .update(user)
+            .set({
+                name,
+                email,
+                role
+            })
+            .where(eq(user.id, userId))
     }
 }
 
