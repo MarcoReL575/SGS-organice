@@ -1,6 +1,6 @@
 import { db } from "@/src";
 import { account, user } from "@/src/db/schema/auth-schema";
-import { and, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { UserInsert, UserSelect } from "../types/types";
 import { invitations } from "@/src/db/schema/invitations-schema";
 import { InvitationSelect } from "../../email/types/types";
@@ -64,6 +64,7 @@ class AuthRepository implements IAuthRepository {
         const users = await db
             .select()
             .from(user)
+            .orderBy(desc(user.isActive))
         return users
     }
 
