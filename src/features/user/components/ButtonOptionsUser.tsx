@@ -15,7 +15,7 @@ export function ButtonOptionsUser({ userId }: Props) {
 
     const { setOpen } = useModalStore();
     const handleOpenModalDeleteUser = ()=> {
-        setOpen("modalDeleteUser", )
+        setOpen("modalDeleteUser", userId);
     }
 
     return (
