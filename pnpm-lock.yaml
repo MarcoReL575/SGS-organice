@@ -44,6 +44,9 @@ importers:
       drizzle-orm:
         specifier: 1.0.0-rc.4
         version: 1.0.0-rc.4(@neondatabase/serverless@1.2.0)(zod@4.6.7)
+      drizzle-zod:
+        specifier: ^0.8.3
+        version: 0.8.3(drizzle-orm@1.0.0-rc.4(@neondatabase/serverless@1.2.0)(zod@4.6.7))(zod@4.6.7)
       lucide-react:
         specifier: ^1.57.0
         version: 1.57.0(@types/react@19.3.0)(react@19.3.1)
@@ -2175,6 +2178,12 @@ packages:
         optional: true
       zod:
         optional: true
+
+  drizzle-zod@0.8.3:
+    resolution: {integrity: sha512-66yVOuvGhKJnTdiqj1/Xaaz9/qzOdRJADpDa68enqS6g3t0kpNkwNYjUuaeXgZfO/UWuIM9HIhSlJ6C5ZraMww==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
+      zod: ^3.25.0 || ^4.0.0
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -5060,7 +5069,7 @@ snapshots:
       '@typescript-eslint/visitor-keys': 8.71.2
       debug: 4.4.3(supports-color@7.2.0)
       minimatch: 10.2.6
-      semver: 7.8.5
+      semver: 7.8.6
       tinyglobby: 0.2.17
       ts-api-utils: 2.5.0(typescript@5.9.3)
       typescript: 5.9.3
@@ -5591,6 +5600,11 @@ snapshots:
   drizzle-orm@1.0.0-rc.4(@neondatabase/serverless@1.2.0)(zod@4.6.7):
     optionalDependencies:
       '@neondatabase/serverless': 1.2.0
+      zod: 4.6.7
+
+  drizzle-zod@0.8.3(drizzle-orm@1.0.0-rc.4(@neondatabase/serverless@1.2.0)(zod@4.6.7))(zod@4.6.7):
+    dependencies:
+      drizzle-orm: 1.0.0-rc.4(@neondatabase/serverless@1.2.0)(zod@4.6.7)
       zod: 4.6.7
 
   dunder-proto@1.0.1:
@@ -7135,8 +7149,7 @@ snapshots:
 
   semver@7.8.5: {}
 
-  semver@7.8.6:
-    optional: true
+  semver@7.8.6: {}
 
   send@1.2.1(supports-color@7.2.0):
     dependencies:
