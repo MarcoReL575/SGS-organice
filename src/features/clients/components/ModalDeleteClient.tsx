@@ -1,14 +1,28 @@
+'use client'
+
 import ModalGlobal from '@/src/shared/components/modal/ModalGlobal';
-import { Button } from '@/src/shared/components/ui/button';
 import { useModalStore } from '@/src/shared/store/useModalStore'
-import { Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import { deleteClientAction } from '../actions/deleteClientAction';
+import { IDataInfo } from './ButtonOptionsClients';
+import toast from 'react-hot-toast';
 
 export default function ModalDeleteClient() {
 
-    const { isOpen, setClose} = useModalStore();
+    const { setClose, data } = useModalStore();
+    const dataInfo: IDataInfo = data
 
-    const handleDeleteClient = ()=> {
-        console.log('eliminando cliente')
+    const handleDeleteClient = async()=> {
+
+        const { success, message } = await deleteClientAction(dataInfo.clientId, dataInfo.clientName);
+        if(!success) {
+            toast.error(message);
+        }
+
+        if(success) {
+            toast.success(message);
+            setClose();
+        }
+
     }
     
     return (
