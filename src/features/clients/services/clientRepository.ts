@@ -8,6 +8,7 @@ export type IClientRepository = {
     selectClient(clientName: string): Promise<ClientSelect | null>;
     selectAllClients(): Promise<ClientSelect[]>;
     setDeleteClient(clientId: string): Promise<void>;
+    setRecoverClient(clientId: string): Promise<void>;
 }
 
 class ClientRepository implements IClientRepository {
@@ -44,6 +45,15 @@ class ClientRepository implements IClientRepository {
             .update(clients)
             .set({
                 status: 'inactive'
+            })
+            .where(eq(clients.id, clientId))
+    }
+
+    async setRecoverClient(clientId: string): Promise<void> {
+        await db
+            .update(clients)
+            .set({
+                status: 'active'
             })
             .where(eq(clients.id, clientId))
     }

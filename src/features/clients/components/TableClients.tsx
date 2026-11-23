@@ -42,7 +42,7 @@ export default function TableClients({ data }: Props) {
             header: () => <span>opciones</span>,
             cell: (info) => {
                 const clientId = info.row.original.id
-                const clientName = info.row.original.clientName;
+                const clientName = info.row.original.name;
                 const clientIsActive = info.row.original.status;
                 const dataInfo = {
                     clientId,
@@ -55,7 +55,10 @@ export default function TableClients({ data }: Props) {
                                     dataInfo={dataInfo}
                                     linkToEdit={`/dashboard/clientes/editarCliente?=${clientId}`}
                                 />
-                            : <ButtonRecoverClient />
+                            :   <ButtonRecoverClient 
+                                    clientId={clientId}
+                                    clientName={clientName}
+                                />
                         }
                     </>
                 )
