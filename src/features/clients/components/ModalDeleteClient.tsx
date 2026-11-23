@@ -5,11 +5,13 @@ import { useModalStore } from '@/src/shared/store/useModalStore'
 import { deleteClientAction } from '../actions/deleteClientAction';
 import { IDataInfo } from './ButtonOptionsClients';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export default function ModalDeleteClient() {
 
     const { setClose, data } = useModalStore();
-    const dataInfo: IDataInfo = data
+    const dataInfo: IDataInfo = data;
+    const router = useRouter();
 
     const handleDeleteClient = async()=> {
 
@@ -19,6 +21,7 @@ export default function ModalDeleteClient() {
         }
 
         if(success) {
+            router.refresh();
             toast.success(message);
             setClose();
         }
