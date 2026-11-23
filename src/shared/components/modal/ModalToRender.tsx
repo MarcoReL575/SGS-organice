@@ -1,16 +1,15 @@
 'use client'
 
-import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
-import { useState } from 'react'
-import { useModalStore } from '../store/useModalStore'
-import { Button } from './ui/button'
+import ModalDeleteClient from '@/src/features/clients/components/ModalDeleteClient';
 import ModalDeleteUser from '@/src/features/user/components/ModalDeleteUser'
+import { useModalStore } from '../../store/useModalStore';
 
 const modalObject: any = {
     modalDeleteUser: ModalDeleteUser,
+    modalDeleteClient: ModalDeleteClient,
 };
 
-export default function ModalGlobal() {
+export default function ModalRender() {
     const { type, isOpen } = useModalStore();
     if (!isOpen || !type) return null;
 
