@@ -4,6 +4,7 @@ import { IconDotsVertical, IconUserUp } from '@tabler/icons-react'
 import { recoverUserAction } from '../actions/recoverUserAction'
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { DropdownMenuButton } from '@/src/shared/components/DropdownMenuButton';
 
 interface Props {
     userId: string;
@@ -27,20 +28,17 @@ export default function ButtonRecoverUser({ email, userId }: Props) {
         }
     }
 
+    const options = [
+        {
+            label: 'Recuperar Usuario',
+            icon: <IconUserUp />,
+            onCLick: handleRecoverUser,
+        }
+    ]
+
   return (
-    <DropdownMenu>
-        <DropdownMenuTrigger render={<Button variant="outline"><IconDotsVertical /></Button>} />
-        <DropdownMenuContent className="w-40 bg-white" align="start">
-            <DropdownMenuGroup>
-                <DropdownMenuItem
-                    className='hover:text-red-500 duration-300 transition-all cursor-pointer'
-                    onClick={handleRecoverUser}
-                >
-                    Recuperar Usuario 
-                    <DropdownMenuShortcut><IconUserUp /></DropdownMenuShortcut>
-                </DropdownMenuItem>
-            </DropdownMenuGroup>
-        </DropdownMenuContent>
-    </DropdownMenu>
+    <DropdownMenuButton
+        options={options}
+    />
   )
 }
