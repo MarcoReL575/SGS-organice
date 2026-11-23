@@ -53,7 +53,7 @@ export default function TableClients({ data }: Props) {
                         {clientIsActive === 'active'
                             ?   <ButtonOptionsClients  
                                     dataInfo={dataInfo}
-                                    linkToEdit={`/dashboard/clientes/editarCliente?=${clientId}`}
+                                    linkToEdit={`/dashboard/clientes/${clientId}/editar`}
                                 />
                             :   <ButtonRecoverClient 
                                     clientId={clientId}
