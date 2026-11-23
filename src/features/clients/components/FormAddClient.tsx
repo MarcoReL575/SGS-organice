@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form'
 import { clientFormSchema } from '../schemas/clientSchemas'
 import { ClientInsert } from '../types/clientsTypes'
 import { addClientAction } from '../actions/addClientAction'
-import { fi } from 'zod/v4/locales'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 

@@ -1,6 +1,7 @@
 import { requireAuth } from "@/src/lib/session";
-import { ClientInsert } from "../types/clientsTypes"
+import { ClientInsert, ClientSelect } from "../types/clientsTypes"
 import { clientRepository, IClientRepository } from "./clientRepository"
+import { Role } from "../../auth/lib/session";
 
 class ClientService {
     constructor(
@@ -37,6 +38,17 @@ class ClientService {
         const clientsList = await this.clientRepository.selectAllClients();
         return { success: true, message: '', clients: clientsList }
     }
+    
+    async getClient(clientId: string, userRole: Role) {
+        if(userRole !== 'admin') return { success: false, message: 'El usuario no tiene los permisos necesarios', client: {} as ClientSelect }
+
+        try {
+            const client = await this.clientRepository.selectClientById(clientId);
+            return { success: true, message: '', client }
+        } catch (error) {
+            return { success: false, message: 'Hubo un error al obtener al cliente', client: {} as ClientSelect }
+        }
+    }
 
     async deleteClient(clientId: string, clientName: string) {
 
@@ -59,6 +71,18 @@ class ClientService {
              return { success: true, message: 'Hubo un error al recuperar al cliente' }
         }
     }
+
+    async updateInfoClient(userRole: Role, clientInfo: ClientInsert, clientId: string) {
+        if(userRole !== 'admin') return { success: false, message: 'El usuario no tiene los permisos necesarios' }
+
+        try {
+            await this.clientRepository.updateClient(clientInfo, clientId);
+            return { success: true, message: 'El cliente fue actualizado' }
+        } catch (error) {
+            return { success: false, message: 'Hubo un eror al actualizar al cliente' }
+        }
+    }
+
 
 }
 
