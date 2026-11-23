@@ -2,17 +2,20 @@ import { DropdownMenuButton } from "@/src/shared/components/DropdownMenuButton";
 import { useModalStore } from "@/src/shared/store/useModalStore";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 
+export interface IDataInfo {
+    clientId: string;
+    clientName: string;
+}
 interface Props {
     linkToEdit: string;
-    clientId: string
+    dataInfo: IDataInfo
 }
 
-export default function ButtonOptionsClients({ linkToEdit, clientId }: Props) {
+export default function ButtonOptionsClients({ linkToEdit, dataInfo }: Props) {
 
     const { setOpen} = useModalStore();
-    const handleDeleteClient = async()=> {
-        setOpen('modalDeleteClient');
-        console.log('ClienteEliminado');
+    const handleOpenModalDeleteClient = async()=> {
+        setOpen('modalDeleteClient', dataInfo);
     }
 
   return (
@@ -26,7 +29,7 @@ export default function ButtonOptionsClients({ linkToEdit, clientId }: Props) {
                 {
                     label: 'Eliminar',
                     icon: <IconTrash />,
-                    onCLick: handleDeleteClient,
+                    onCLick: handleOpenModalDeleteClient,
                     variant: 'destructive' 
                 }
             ]}

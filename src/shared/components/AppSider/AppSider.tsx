@@ -27,8 +27,7 @@ const menuItems = {
 
 export function AppSidebar({ userRole }: { userRole: string}) {
   const items = menuItems[userRole as keyof typeof menuItems] || [];
-  console.log({items})
-
+  
   return (
     <Sidebar collapsible="offcanvas">
       <SidebarHeader>
