@@ -7,6 +7,7 @@ export type IClientRepository = {
     insertNewClient(infoClient: ClientInsert): Promise<void>;
     selectClient(clientName: string): Promise<ClientSelect | null>;
     selectAllClients(): Promise<ClientSelect[]>;
+    setDeleteClient(clientId: string): Promise<void>;
 }
 
 class ClientRepository implements IClientRepository {
@@ -36,6 +37,15 @@ class ClientRepository implements IClientRepository {
             .select()
             .from(clients)
             .orderBy(desc(clients.createdAt))
+    }
+
+    async setDeleteClient(clientId: string): Promise<void> {
+        await db
+            .update(clients)
+            .set({
+                status: 'inactive'
+            })
+            .where(eq(clients.id, clientId))
     }
 }
 

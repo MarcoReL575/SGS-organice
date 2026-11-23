@@ -14,7 +14,7 @@ class ClientService {
 
             return { success: true, message: 'El cliente con ese nombre ya existe' } 
         } catch (error) {
-            return { success: true, message: 'Error en obtener al cliente' }
+            return { success: false, message: 'Error en obtener al cliente' }
         }
     }
 
@@ -36,6 +36,16 @@ class ClientService {
 
         const clientsList = await this.clientRepository.selectAllClients();
         return { success: true, message: '', clients: clientsList }
+    }
+
+    async deleteClient(clientId: string, clientName: string) {
+
+        try {
+            await this.clientRepository.setDeleteClient(clientId);
+            return { success: true, message: 'El cliente fue eliminado' }
+        } catch (error) {
+            return { success: false, message: 'Error al eliminar el cliente' }
+        }
     }
 
 }
