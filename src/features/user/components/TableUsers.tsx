@@ -67,8 +67,11 @@ const columns = [
             return (
                 <div className='flex items-center justify-center'>
                     {userIsActive 
-                        ? <ButtonOptionsUser userId={userId} />
-                        : <ButtonRecoverUser email={email} userId={userId} />
+                        ?   <ButtonOptionsUser 
+                                userId={userId} 
+                                linkToEdit={`/dashboard/usuarios/editarUsuario?usuario=${userId}`} 
+                            />
+                        :   <ButtonRecoverUser email={email} userId={userId} />
                     }
                 </div>
             )

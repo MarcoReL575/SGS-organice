@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type ModalType = 'modalDeleteUser' | null
+export type ModalType = 'modalDeleteUser' | 'modalDeleteClient' | null
 
 interface ModalStore {
     type: ModalType;
