@@ -48,6 +48,18 @@ class ClientService {
         }
     }
 
+    async recoverClient(clientId: string, clientName: string) {
+        try {
+            const { success, message } = await this.existsClient(clientName);
+            if(!success) return { success, message: 'El usuario no esta registrado' }
+
+            await this.clientRepository.setRecoverClient(clientId); 
+            return { success: true, message: 'El cliente fue recuperado' }
+        } catch (error) {
+             return { success: true, message: 'Hubo un error al recuperar al cliente' }
+        }
+    }
+
 }
 
 export const clientService = new ClientService(clientRepository)
