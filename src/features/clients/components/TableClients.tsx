@@ -5,9 +5,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, 
 import { createColumnHelper, createPaginatedRowModel, tableFeatures, useTable, rowPaginationFeature } from '@tanstack/react-table';
 import { ClientSelect } from '../types/clientsTypes';
 import { clsx } from 'cn';
-import { DropdownMenuButton } from '@/src/shared/components/DropdownMenuButton';
-import { IconEdit } from '@tabler/icons-react';
 import ButtonOptionsClients from './ButtonOptionsClients';
+import ButtonRecoverClient from './ButtonRecoverClient';
 
 interface Props {
     data: ClientSelect[];
@@ -43,12 +42,22 @@ export default function TableClients({ data }: Props) {
             header: () => <span>opciones</span>,
             cell: (info) => {
                 const clientId = info.row.original.id
-                const linToEdit = info.row.original.email;
+                const clientName = info.row.original.clientName;
+                const clientIsActive = info.row.original.status;
+                const dataInfo = {
+                    clientId,
+                    clientName
+                }
                 return (
-                    <ButtonOptionsClients  
-                        clientId={clientId}
-                        linkToEdit={`/dashboard/clientes/editarCliente?=${clientId}`}
-                    />
+                    <>
+                        {clientIsActive === 'active'
+                            ?   <ButtonOptionsClients  
+                                    dataInfo={dataInfo}
+                                    linkToEdit={`/dashboard/clientes/editarCliente?=${clientId}`}
+                                />
+                            : <ButtonRecoverClient />
+                        }
+                    </>
                 )
             }
         }),
@@ -74,7 +83,7 @@ export default function TableClients({ data }: Props) {
                     noResultsMessage="No se encontraron usuarios registrados."
                     getRowClassName={(row) =>
                         clsx(
-                            row.original.status
+                            row.original.status === 'active'
                                 ? 'transition-opacity'
                                 : 'opacity-30 transition-opacity'
                         )
