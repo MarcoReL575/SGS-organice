@@ -2,13 +2,15 @@
 
 import { UserSelect } from '@/src/features/auth/types/types';
 import { TableComponent } from '@/src/shared/components/table/TableComponent';
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/src/shared/components/ui/card';
-import { useTable, tableFeatures, rowPaginationFeature, createPaginatedRowModel, createColumnHelper } from '@tanstack/react-table';
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/src/shared/components/ui/card';
+import { useTable, tableFeatures, rowPaginationFeature, createPaginatedRowModel, createColumnHelper, columnFilteringFeature, globalFilteringFeature, createFilteredRowModel } from '@tanstack/react-table';
 import ButtonResendInvitation from './ButtonResendInvitation';
 import { IconCheck } from '@tabler/icons-react';
 import { ButtonOptionsUser } from './ButtonOptionsUser';
 import { clsx } from 'cn';
 import ButtonRecoverUser from './ButtonRecoverUser';
+import SearchFilter from '@/src/shared/components/filters/SearchFilter';
+import { TablePagination } from '@/src/shared/components/table/TablePagination';
 
 interface Props {
     data: UserSelect[];
@@ -82,7 +84,10 @@ const columns = [
 
 const features = tableFeatures({
     rowPaginationFeature,
+    columnFilteringFeature,
+    globalFilteringFeature,
     paginatedRowModel: createPaginatedRowModel(),
+    filteredRowModel: createFilteredRowModel(),
 });
 
 export default function UsersTable({ data }: Props) {
@@ -90,6 +95,9 @@ export default function UsersTable({ data }: Props) {
         features,
         columns,
         data,
+        initialState: {
+            globalFilter: ''
+        }
     });
 
     return (
@@ -97,7 +105,13 @@ export default function UsersTable({ data }: Props) {
             <CardHeader>
                 <CardTitle>Lista de usuarios registrados en SGS-Organice</CardTitle>
                 <CardDescription>Da seguimiento a todos los usuarios que han sido dados de alta.</CardDescription>
-                <CardAction>Card Action</CardAction>
+                <CardAction>
+                    <SearchFilter 
+                        placeholder='Buscar usuario...'
+                        value={table.state.globalFilter ?? ''}
+                        onChange={(value)=> table.setGlobalFilter(value)}
+                    />
+                </CardAction>
             </CardHeader>
             <CardContent>
                 <TableComponent
@@ -113,6 +127,11 @@ export default function UsersTable({ data }: Props) {
                     }
                 />
             </CardContent>
+            <CardFooter>
+                <TablePagination 
+                    table={table}
+                />
+            </CardFooter>
         </Card>
     );
 }

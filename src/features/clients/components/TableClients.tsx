@@ -2,11 +2,14 @@
 
 import { TableComponent } from '@/src/shared/components/table/TableComponent'
 import { Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter } from '@/src/shared/components/ui/card'
-import { createColumnHelper, createPaginatedRowModel, tableFeatures, useTable, rowPaginationFeature } from '@tanstack/react-table';
+import { createColumnHelper, createPaginatedRowModel, tableFeatures, useTable, rowPaginationFeature, 
+    columnFilteringFeature, globalFilteringFeature, createFilteredRowModel, rowSortingFeature, createSortedRowModel } from '@tanstack/react-table';
 import { ClientSelect } from '../types/clientsTypes';
 import { clsx } from 'cn';
 import ButtonOptionsClients from './ButtonOptionsClients';
 import ButtonRecoverClient from './ButtonRecoverClient';
+import { TablePagination } from '@/src/shared/components/table/TablePagination';
+import SearchFilter from '@/src/shared/components/filters/SearchFilter';
 
 interface Props {
     data: ClientSelect[];
@@ -18,6 +21,11 @@ export default function TableClients({ data }: Props) {
 
     const features = tableFeatures({
         rowPaginationFeature,
+        columnFilteringFeature,
+        globalFilteringFeature,
+        rowSortingFeature,
+        filteredRowModel: createFilteredRowModel(),
+        sortedRowModel: createSortedRowModel(),
         paginatedRowModel: createPaginatedRowModel(),
     });
 
@@ -70,6 +78,9 @@ export default function TableClients({ data }: Props) {
         features,
         columns,
         data,
+        initialState: {
+            globalFilter: ''
+        }
     });
 
     return (
@@ -77,7 +88,13 @@ export default function TableClients({ data }: Props) {
             <CardHeader>
                 <CardTitle>Tabla De Clientes actuales de SGS-Organice</CardTitle>
                 <CardDescription>Da seguimiento a todos los clientes a los que les ofreces algún tipo de servicio</CardDescription>
-                <CardAction>Card Action</CardAction>
+                <CardAction>
+                    <SearchFilter 
+                        placeholder='Buscar cliente...'
+                        value={table.state.globalFilter ?? ''}
+                        onChange={(value)=> table.setGlobalFilter(value)}
+                    />
+                </CardAction>
             </CardHeader>
             <CardContent>
                <TableComponent
@@ -94,7 +111,9 @@ export default function TableClients({ data }: Props) {
                 />
             </CardContent>
             <CardFooter>
-                <p>Card Footer</p>
+                <TablePagination 
+                    table={table}
+                />
             </CardFooter>
         </Card>
     )
