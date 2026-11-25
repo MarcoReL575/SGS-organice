@@ -12,13 +12,14 @@ const menuItems = {
     { title: "Clientes", url: "/dashboard/clientes", icon: IconUserCircle, role: 'administrador'  },
   ],
   supervisor: [
-    { title: "Dashboard", url: "/dashboard", icon: IconUserCircle, role: 'supervisor'  },
+    { title: "Dashboard", url: "/dashboard/home", icon: IconUserCircle, role: 'supervisor'  },
+    { title: "Clientes-sitios", url: "/dashboard/clientes-sitios", icon: IconUserCircle, role: 'supervisor'  },
     { title: "Servicios", url: "/dashboard/servicios", icon: IconUserCircle, role: 'supervisor'  },
     { title: "Pendientes de Revisión", url: "/dashboard/revision", icon: IconUserCircle, role: 'supervisor'  },
     { title: "Historial", url: "/dashboard/historial", icon: IconUserCircle, role: 'supervisor'  },
   ],
   ingeniero: [
-    { title: "Dashboard", url: "/dashboard", icon: IconUserCircle, role: 'ingeniero'  },
+    { title: "Dashboard", url: "/dashboard/home", icon: IconUserCircle, role: 'ingeniero'  },
     { title: "Servicios Nuevos", url: "/dashboard/nuevos", icon: IconUserCircle, role: 'ingeniero'  },
     { title: "Servicios Abiertos", url: "/dashboard/abiertos", icon: IconUserCircle, role: 'ingeniero'  },
     { title: "Servicios Cerrados", url: "/dashboard/cerrados", icon: IconUserCircle, role: 'ingeniero'  },
