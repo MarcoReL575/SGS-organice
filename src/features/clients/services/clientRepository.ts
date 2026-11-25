@@ -1,6 +1,6 @@
 import { db } from "@/src";
-import { ClientInsert, ClientSelect } from "../types/clientsTypes";
-import { clients } from "@/src/db";
+import { ClientInsert, ClientSelect, SiteInsert } from "../types/clientsTypes";
+import { clients, clientSites } from "@/src/db";
 import { asc, desc, eq } from "drizzle-orm";
 
 export type IClientRepository = {
@@ -11,6 +11,7 @@ export type IClientRepository = {
     setDeleteClient(clientId: string): Promise<void>;
     setRecoverClient(clientId: string): Promise<void>;
     updateClient(infoClient:ClientInsert, clientId: string): Promise<void>;
+    insertSite(siteInfo: SiteInsert): Promise<void>;
 }
 
 class ClientRepository implements IClientRepository {
@@ -80,6 +81,22 @@ class ClientRepository implements IClientRepository {
                 updatedAt: new Date()   
             })
             .where(eq(clients.id, clientId))
+    }
+
+    async insertSite(siteInfo: SiteInsert): Promise<void> {
+        const { name, clientId, city, state, street, affiliationNumber, postalCode, exteriorNumber } = siteInfo;
+        await db
+            .insert(clientSites)
+            .values({
+                name, 
+                clientId, 
+                city, 
+                state, 
+                street, 
+                affiliationNumber, 
+                postalCode, 
+                exteriorNumber
+            })
     }
 }
 

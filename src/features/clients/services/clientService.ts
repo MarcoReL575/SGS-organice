@@ -1,7 +1,9 @@
 import { requireAuth } from "@/src/lib/session";
-import { ClientInsert, ClientSelect } from "../types/clientsTypes"
+import { ClientInsert, ClientSelect, SiteInsert } from "../types/clientsTypes"
 import { clientRepository, IClientRepository } from "./clientRepository"
 import { Role } from "../../auth/lib/session";
+import { safeParse, User } from "better-auth";
+import { siteClientSchema } from "../schemas/clientSchemas";
 
 class ClientService {
     constructor(
@@ -33,10 +35,11 @@ class ClientService {
 
     async getAllClients() {
         const { user } = await requireAuth();
-        if(user.role !== 'admin') return { success: false, message: 'El usuario no cuenta con los permisos necesarios', clients: [] }
-
-        const clientsList = await this.clientRepository.selectAllClients();
-        return { success: true, message: '', clients: clientsList }
+        if(user.role === 'admin' || user.role === 'supervisor') {
+            const clientsList = await this.clientRepository.selectAllClients();
+            return { success: true, message: '', clients: clientsList }
+        }
+        return { success: false, message: 'El usuario no cuenta con los permisos necesarios', clients: [] }
     }
     
     async getClient(clientId: string, userRole: Role) {
@@ -84,6 +87,19 @@ class ClientService {
     }
 
 
+    async addSite(siteInfo: SiteInsert, userRole: Role) {
+        if(userRole !=='supervisor') return { success: false, message: 'El usuario no tiene los permisos necesarios' }
+    
+        try {
+            const { data, success } = siteClientSchema.safeParse(siteInfo);
+            if(!success) return { success: false, message: 'Error de validación' }
+
+            await this.clientRepository.insertSite(data);
+            return { success: true, message: 'El sitio o sucursal fue agregada' }
+        } catch (error) {
+            return { success: false, message: 'Hubo un error al agregar el sitio o sucursal' }
+        }
+    }
 }
 
 export const clientService = new ClientService(clientRepository)
