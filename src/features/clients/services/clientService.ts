@@ -100,6 +100,18 @@ class ClientService {
             return { success: false, message: 'Hubo un error al agregar el sitio o sucursal' }
         }
     }
+
+    async getAllSites() {
+        const { user } = await requireAuth();
+        if(user.role !== 'supervisor') return { success: false, message: 'El usuario no tiene los permisos necesarios', sites: [] as ClientSelect[] }
+
+        try {
+            const sites = await this.clientRepository.selectAllSites();
+            return { success: true, message:'', sites }
+        } catch (error) {
+            return { success: false, message: 'Error al obtener los sitios', sites: [] as ClientSelect[] }
+        }
+    }
 }
 
 export const clientService = new ClientService(clientRepository)

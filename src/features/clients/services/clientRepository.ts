@@ -1,5 +1,5 @@
 import { db } from "@/src";
-import { ClientInsert, ClientSelect, SiteInsert } from "../types/clientsTypes";
+import { ClientInsert, ClientSelect, SiteInsert, SiteSelect } from "../types/clientsTypes";
 import { clients, clientSites } from "@/src/db";
 import { asc, desc, eq } from "drizzle-orm";
 
@@ -12,6 +12,7 @@ export type IClientRepository = {
     setRecoverClient(clientId: string): Promise<void>;
     updateClient(infoClient:ClientInsert, clientId: string): Promise<void>;
     insertSite(siteInfo: SiteInsert): Promise<void>;
+    selectAllSites(): Promise<SiteSelect[]>;
 }
 
 class ClientRepository implements IClientRepository {
@@ -48,7 +49,7 @@ class ClientRepository implements IClientRepository {
         return await db
             .select()
             .from(clients)
-            .orderBy(desc(clients.createdAt))
+            .orderBy(asc(clients.status), asc(clients.name))
     }
 
     async setDeleteClient(clientId: string): Promise<void> {
@@ -97,6 +98,14 @@ class ClientRepository implements IClientRepository {
                 postalCode, 
                 exteriorNumber
             })
+    }
+
+    async selectAllSites(): Promise<SiteSelect[]> {
+        const sites = await db
+            .select()
+            .from(clientSites)
+            .orderBy(asc(clientSites.createdAt))
+        return sites
     }
 }
 
