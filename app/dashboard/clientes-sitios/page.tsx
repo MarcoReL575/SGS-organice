@@ -25,7 +25,6 @@ export default async function ClientesSitiosPage() {
     <>
       <section className=' space-y-8'>
         <header>
-          <ButtonAddSiteClient />
           <h1 className='text-3xl font-semibold mt-4'>Selecciona un cliente</h1>
           <p className=' text-gray-500'>Selecciona un cliente, para ver los sitios o sucursales que este tiene</p>
         </header>
