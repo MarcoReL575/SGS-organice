@@ -5,37 +5,66 @@ import { estadosMexico } from '@/src/shared/db/listStates'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { siteClientSchema } from '../schemas/clientSchemas'
-import { ClientSelect, SiteInsert } from '../types/clientsTypes'
-import { IconCircleCheck } from '@tabler/icons-react'
+import { ClientSelect, SiteInsert, SiteSelect } from '../types/clientsTypes'
+import { IconCircleCheck, IconEdit } from '@tabler/icons-react'
 import { addSiteAction } from '../actions/addSiteAction'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import { updateSiteAction } from '../actions/updateSiteAction'
 
 interface Props {
     clients: ClientSelect[];
-    slug: string
+    slug: string;
+    option: string;
+    site?: SiteSelect;
+    id?: string 
 }
 
-export default function FormAddSiteClient({ clients, slug }: Props) {
+export default function FormAddSiteClient({ clients, slug, option, site, id }: Props) {
 
     const optionClient = clients.find((client)=> client.name === slug);
     const router = useRouter();
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
-        resolver: zodResolver(siteClientSchema)
+        resolver: zodResolver(siteClientSchema),
+        defaultValues: {
+            name: site?.name,
+            affiliationNumber: site?.affiliationNumber ?? '',
+            street: site?.street,
+            exteriorNumber: site?.exteriorNumber ?? '',
+            state: site?.state,
+            city: site?.city,
+            postalCode: site?.postalCode ?? '',
+
+        }
     });
 
     const handleAddSite = async(siteInfo: SiteInsert)=> {
-        const { success, message } = await addSiteAction(siteInfo);
-        if(!success) {
-            toast.error(message);
+        if(option === 'agregar') {
+            const { success, message } = await addSiteAction(siteInfo);
+            if(!success) {
+                toast.error(message);
+            }
+    
+            if(success){
+                reset();
+                toast.success(message);
+                router.push('/dashboard/clientes-sitios');
+            }
         }
 
-        if(success){
-            reset();
-            toast.success(message);
-            router.push('/dashboard/clientes-sitios');
+        if(option === 'editar' && id) {
+            const { success, message } = await updateSiteAction(siteInfo, id);
+            if(!success) {
+                toast.error(message);
+            }
+
+            if(success) {
+                reset();
+                router.push(`/dashboard/clientes-sitios/${slug}`);
+                toast.success(message);
+            }
         }
     }
 
@@ -108,8 +137,17 @@ export default function FormAddSiteClient({ clients, slug }: Props) {
         </div>
 
         <FormSubmit className='flex items-center justify-center w-full'>
-            <IconCircleCheck className='size-6' />
-            Agregar Sitio
+            {
+                option === 'agregar'
+                    ?   <>
+                            <IconCircleCheck className='size-6' />
+                            Agregar Sitio
+                        </>
+                    :   <>
+                            <IconEdit className='size-6' />
+                            Editar sitio
+                        </>
+            }
         </FormSubmit>
     </FormComponent>
   )
