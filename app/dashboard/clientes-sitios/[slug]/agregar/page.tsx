@@ -27,7 +27,7 @@ async function PageContent({ params }: Props) {
                 </div>
             </header>
             <main>
-                <FormAddSiteClient clients={clients} slug={slug} />
+                <FormAddSiteClient clients={clients} slug={slug} option='agregar' />
             </main>
         </section>
     )
