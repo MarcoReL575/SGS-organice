@@ -121,6 +121,19 @@ class ClientService {
             return { success: false, message: 'Hubo un error al traer la información', site: {} as SiteSelect }
         }
     }
+
+    async updateSite(siteInfo: SiteInsert, siteId: string, role: Role) {
+        if(role !== 'supervisor') return { success: false, message: 'El usuario no tiene los permisos necesarios' }
+        try {
+            const { success, data } = siteClientSchema.safeParse(siteInfo);
+            if(!success) return { success: false, message: 'Error de validación en los datos' }
+
+            await this.clientRepository.setUpdateSite(data, siteId);
+            return { success: true, message: 'El sitio/sucursal fue actualizado' }
+        } catch (error) {
+            return { success: false, message: 'Error al actualizar los datos' }
+        }
+    }
 }
 
 export const clientService = new ClientService(clientRepository)
