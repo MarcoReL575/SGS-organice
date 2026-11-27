@@ -13,11 +13,14 @@ import { useRouter } from 'next/navigation'
 
 interface Props {
     clients: ClientSelect[];
+    slug: string
 }
 
-export default function FormAddSiteClient({ clients }: Props) {
+export default function FormAddSiteClient({ clients, slug }: Props) {
 
+    const optionClient = clients.find((client)=> client.name === slug);
     const router = useRouter();
+
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         mode: 'onBlur',
         resolver: zodResolver(siteClientSchema)
@@ -38,19 +41,14 @@ export default function FormAddSiteClient({ clients }: Props) {
 
   return (
     <FormComponent
-        className='flex flex-col space-y-4 mt-8 border rounded-lg p-8'
+        className='flex flex-col space-y-4 border rounded-lg p-8'
         onSubmit={handleSubmit(handleAddSite)}
     >
 
         <div className='flex flex-col space-y-2'>
             <FormLabel>Selecciona el cliente</FormLabel>
             <select {...register('clientId')} className='border rounded-lg p-2'>
-                <option value="">--Selecciona Cliente--</option>
-                {
-                    clients && clients.map((client)=> (
-                        <option key={client.id} value={client.id}>{client.name}</option>
-                    ))
-                }
+                <option value={optionClient?.id}>{optionClient?.name}</option>
             </select>
             
             <FormLabel>Nombre</FormLabel>

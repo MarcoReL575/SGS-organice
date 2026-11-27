@@ -1,5 +1,5 @@
 import { db } from "@/src";
-import { ClientInsert, ClientSelect, SiteInsert, SiteSelect } from "../types/clientsTypes";
+import { ClientInsert, ClientSelect, SiteInfo, SiteInsert, SiteSelect } from "../types/clientsTypes";
 import { clients, clientSites } from "@/src/db";
 import { asc, desc, eq } from "drizzle-orm";
 
@@ -12,7 +12,8 @@ export type IClientRepository = {
     setRecoverClient(clientId: string): Promise<void>;
     updateClient(infoClient:ClientInsert, clientId: string): Promise<void>;
     insertSite(siteInfo: SiteInsert): Promise<void>;
-    selectAllSites(): Promise<SiteSelect[]>;
+    selectClientSites(clientId: string): Promise<SiteInfo[]>;
+    selectSiteById(siteId: string): Promise<SiteSelect>;
 }
 
 class ClientRepository implements IClientRepository {
@@ -100,12 +101,30 @@ class ClientRepository implements IClientRepository {
             })
     }
 
-    async selectAllSites(): Promise<SiteSelect[]> {
-        const sites = await db
+    async selectClientSites(clientId: string): Promise<SiteInfo[]> {
+        const sites = await db.query.clientSites.findMany({
+            where: {
+                clientId: { eq: clientId }
+            },
+            with: {
+                client: {
+                    columns: {
+                        name: true,
+                        contactName: true,
+                        phone: true
+                    }
+                }
+            }
+        })
+        return sites
+    }
+
+    async selectSiteById(siteId: string): Promise<SiteSelect> {
+        const [result] = await db
             .select()
             .from(clientSites)
-            .orderBy(asc(clientSites.createdAt))
-        return sites
+            .where(eq(clientSites.id, siteId))
+        return result;
     }
 }
 

@@ -1,5 +1,5 @@
 import { requireAuth } from "@/src/lib/session";
-import { ClientInsert, ClientSelect, SiteInsert } from "../types/clientsTypes"
+import { ClientInsert, ClientSelect, SiteInfo, SiteInsert, SiteSelect } from "../types/clientsTypes"
 import { clientRepository, IClientRepository } from "./clientRepository"
 import { Role } from "../../auth/lib/session";
 import { safeParse, User } from "better-auth";
@@ -13,11 +13,11 @@ class ClientService {
     async existsClient(clientName: string) {
         try {
             const isExists = await this.clientRepository.selectClient(clientName);
-            if(!isExists?.name) return { success: false, message: '' }
+            if(!isExists?.name) return { success: false, message: '', client: isExists }
 
-            return { success: true, message: 'El cliente con ese nombre ya existe' } 
+            return { success: true, message: 'El cliente con ese nombre ya existe', client: isExists } 
         } catch (error) {
-            return { success: false, message: 'Error en obtener al cliente' }
+            return { success: false, message: 'Error en obtener al cliente', client: {} as ClientSelect }
         }
     }
 
@@ -101,15 +101,24 @@ class ClientService {
         }
     }
 
-    async getAllSites() {
-        const { user } = await requireAuth();
-        if(user.role !== 'supervisor') return { success: false, message: 'El usuario no tiene los permisos necesarios', sites: [] as ClientSelect[] }
-
+    async getSitesClient(clientSlug: string) {
         try {
-            const sites = await this.clientRepository.selectAllSites();
+            const { success, client } = await this.existsClient(clientSlug);
+            if(!client?.id) return { success: false, message: 'El cliente no existe', sites: [] as SiteInfo[] };
+
+            const sites = await this.clientRepository.selectClientSites(client.id);
             return { success: true, message:'', sites }
         } catch (error) {
-            return { success: false, message: 'Error al obtener los sitios', sites: [] as ClientSelect[] }
+            return { success: false, message: 'Error al obtener los sitios', sites: [] as SiteInfo[] }
+        }
+    }
+
+    async getSite(siteId: string) {
+        try {
+            const site = await this.clientRepository.selectSiteById(siteId);
+            return { success: true, message: '', site }
+        } catch (error) {
+            return { success: false, message: 'Hubo un error al traer la información', site: {} as SiteSelect }
         }
     }
 }
