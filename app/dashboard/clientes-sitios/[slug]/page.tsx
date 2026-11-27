@@ -1,4 +1,5 @@
 import ButtonAddSiteClient from "@/src/features/clients/components/ButtonAddSiteClient";
+import GridSites from "@/src/features/clients/components/GridSites";
 import { clientService } from "@/src/features/clients/services/clientService";
 import { requireAuth } from "@/src/lib/session";
 import ButtonBack from "@/src/shared/components/ButtonBack";
@@ -13,7 +14,7 @@ async function ContentPage({ params }: Props) {
     const { user } = await requireAuth();
     if(user.role !== 'supervisor') return <div>El usuario no tiene los permisos necesarios</div>
 
-    const { success, message, sites } = await clientService.getAllSites();
+    const { sites } = await clientService.getSitesClient(slug);
     
     return (
         <section className="flex flex-col space-y-8">
@@ -28,17 +29,16 @@ async function ContentPage({ params }: Props) {
             </header>
             <main>
                 {
-                    !success 
+                    !sites?.length 
                         ?   <div className="text-center font-semibold text-xl text-gray-500">
                                 No se encontraron sitios o sucursales para este cliente
                             </div>
-                        :   <div></div>
+                        :   <GridSites sitesList={sites} />
                 } 
             </main>
         </section>
     )
 }
-
 
 export default async function ClientSitesPage({ params }: Props) {
     return (
