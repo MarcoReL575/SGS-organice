@@ -6,13 +6,14 @@ import { IconDotsVertical } from "@tabler/icons-react"
 import Link from "next/link"
 import { Route } from "next"
 import { ReactNode } from "react"
+import { VariantButton } from "../types/types"
 
 interface DropdownMenuOptions {
     label: string;
     icon?: ReactNode;
     onCLick?: ()=> void;
     href?: string;
-    variant?: 'default' | 'destructive';
+    variant?: VariantButton;
     shortcut?: string;
     disabled?: boolean;
 }
