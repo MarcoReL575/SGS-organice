@@ -14,6 +14,7 @@ export type IClientRepository = {
     insertSite(siteInfo: SiteInsert): Promise<void>;
     selectClientSites(clientId: string): Promise<SiteInfo[]>;
     selectSiteById(siteId: string): Promise<SiteSelect>;
+    setUpdateSite(siteInfo: SiteInsert, siteId: string): Promise<void>;
 }
 
 class ClientRepository implements IClientRepository {
@@ -125,6 +126,23 @@ class ClientRepository implements IClientRepository {
             .from(clientSites)
             .where(eq(clientSites.id, siteId))
         return result;
+    }
+
+    async setUpdateSite(siteInfo: SiteInsert, siteId: string): Promise<void> {
+        const { name, clientId, affiliationNumber, street, exteriorNumber, state, city, postalCode } = siteInfo;
+        await db
+            .update(clientSites)
+            .set({
+                clientId,
+                name,
+                affiliationNumber,
+                street, 
+                exteriorNumber,
+                state,
+                city,
+                postalCode
+            })
+            .where(eq(clientSites.id, siteId))
     }
 }
 
